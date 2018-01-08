@@ -13,39 +13,52 @@
 
 <script>
   $(function() {
-    $.get("/tasks").success( function( data ) {
-      var htmlString = "";
 
-      $.each(data, function( index, task ) {
-        var checkedStatus = task.done ? "checked" : "";
-        var liElement = '<li><div class="view"><input class="toggle" type="checkbox"' +
+    // The taskHtml method takes in a JavaScript representation
+    // of the task and produces an HTML representation using
+    // <li> tags
+    function taskHtml(task) {
+      var checkedStatus = task.done ? "checked" : "";
+      var liElement = '<li><div class="view"><input class="toggle" type="checkbox"' +
         " data-id='" + task.id + "'" +
         checkedStatus +
         '><label class="item-text">' +
          task.title +
          '</label></div></li>';
-         htmlString += liElement   
+
+      return liElement;
+    }
+
+
+    function toggleItems(e) {
+      var itemId = $(e.target).data("id");
+
+      var checkValue = Boolean($(e.target).is(':checked'));
+
+      $.post("/tasks/" + itemId, {
+        _method: "PUT",
+        task: {
+          done: checkValue
+        }
       });
+    }
+
+
+    $.get("/tasks").success( function( data ) {
+      var htmlString = "";
+
+      $.each(data, function( index, task ) {      
+         htmlString += taskHtml(task)
+      });
+
       var ulTodos = $('.todo-list');
       ulTodos.html(htmlString);
 
-      $('.toggle').change(function(e){
-        var itemId = $(e.target).data("id");
-        console.log(itemId);
-
-        var checkValue = Boolean($(e.target).is(':checked'));
-        console.log("done:", checkValue);
-
-        $.post("/tasks/" + itemId, {
-          _method: "PUT",
-          task: {
-            done: checkValue
-          }
-        });
-
-      });
+      $('.toggle').change(toggleItems);
 
     });
   });
+
+
   
 </script>
