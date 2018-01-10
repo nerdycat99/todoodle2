@@ -1,6 +1,9 @@
 <section class="todoapp">
 	<header class="header">
 		<h1>todos</h1>
+    <form id="new-form">
+      <input type="text" class="new-todo" />
+    </form>
 	</header>
 
 	<section class="main">
@@ -13,6 +16,12 @@
 
 <script>
   $(function() {
+    // why do we use #new-form and not /new form as in below when getting reference to item on DOM
+    $('#new-form').submit(function(event) {
+      event.preventDefault();
+      var textbox = $('.new-todo');
+      console.log("Task: ", textbox.val());
+    });
 
     // The taskHtml method takes in a JavaScript representation
     // of the task and produces an HTML representation using
@@ -30,6 +39,7 @@
     }
 
 
+    // function that is run when user changes a toggle class item
     function toggleItems(e) {
       var itemId = $(e.target).data("id");
 
