@@ -1,3 +1,5 @@
+
+<%= javascript_include_tag "tasks" %>
 <section class="todoapp">
 	<header class="header">
 		<h1>todos</h1>
@@ -13,71 +15,8 @@
 		
 	</section>
 </section>
-
 <script>
-  $(function() {
-    // why do we use #new-form and not /new form as in below when getting reference to item on DOM
-    $('#new-form').submit(function(event) {
-      event.preventDefault();
-      var textbox = $('.new-todo');
 
-      var newTaskItem = {
-        task: {
-          title: textbox.val()
-        }
-      };
-      $.post("/tasks", newTaskItem).success(function(data) {
-        console.log("Successful HTTP request");
-      });
-      
-    });
-
-    // The taskHtml method takes in a JavaScript representation
-    // of the task and produces an HTML representation using
-    // <li> tags
-    function taskHtml(task) {
-      var checkedStatus = task.done ? "checked" : "";
-      var liElement = '<li><div class="view"><input class="toggle" type="checkbox"' +
-        " data-id='" + task.id + "'" +
-        checkedStatus +
-        '><label class="item-text">' +
-         task.title +
-         '</label></div></li>';
-
-      return liElement;
-    }
-
-
-    // function that is run when user changes a toggle class item
-    function toggleItems(e) {
-      var itemId = $(e.target).data("id");
-
-      var checkValue = Boolean($(e.target).is(':checked'));
-
-      $.post("/tasks/" + itemId, {
-        _method: "PUT",
-        task: {
-          done: checkValue
-        }
-      });
-    }
-
-
-    $.get("/tasks").success( function( data ) {
-      var htmlString = "";
-
-      $.each(data, function( index, task ) {      
-         htmlString += taskHtml(task)
-      });
-
-      var ulTodos = $('.todo-list');
-      ulTodos.html(htmlString);
-
-      $('.toggle').change(toggleItems);
-
-    });
-  });
-
-
-  
+// - removed from application.js file  //= require_tree .
+//= require_tree .
 </script>

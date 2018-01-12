@@ -1,9 +1,10 @@
 class TasksController < ApplicationController
 
   def create
-    # push item into the database
+    # push item into the database on the /tasks POST 
     task = Task.create(task_params)
     # render JSON response??? - I think this 'exposes' the rails http post request to javascript?
+    # run - $.post("/tasks", newTaskItem).success(function(data) { .... }); - on view to call this action
     render json: task
   end
 
