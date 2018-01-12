@@ -43,9 +43,9 @@
       $('.toggle').change(toggleItems);
 
     });
-
+    // detects an input into the textfield
     $('#new-form').submit(function(event) {
-      event.preventDefault();
+      event.preventDefault();  // can't remember why we have to supress something?
       var textbox = $('.new-todo');
 
       var newTaskItem = {
@@ -53,12 +53,14 @@
           title: textbox.val()
         }
       };
+      // handles creating a new item 
       $.post("/tasks", newTaskItem).success(function(data) {
         var htmlString = taskHtml(data)
         var ulTodos = $('.todo-list');
         ulTodos.append(htmlString); // adds this to the end of the li section populated on page load
         // NB this adds items to teh page AFTER the click event handler is added to page, this means that only after you refresh the page (and click event handler loads again to monitor all taks which will not include what we just added) does the new item click get acted upon. Below resolves
         $('.toggle').change(toggleItems);
+        $('.new-todo').val('');  // clears the text entry
       }); 
     });
 
