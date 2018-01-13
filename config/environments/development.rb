@@ -45,7 +45,7 @@ Rails.application.configure do
   # Suppress logger output for asset requests.
   config.assets.quiet = true
 
-  # include specific javascript file for specific page
+  # include specific javascript file for specific page- added by NW
   config.assets.precompile += %w( tasks.js )
 
   # Raises error for missing translations
