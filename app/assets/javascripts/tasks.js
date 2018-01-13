@@ -4,7 +4,9 @@
     // <li> tags
     function taskHtml(task) {
       var checkedStatus = task.done ? "checked" : "";
-      var liElement = '<li><div class="view"><input class="toggle" type="checkbox"' +
+      var liClass = task.done ? "completed" : "";
+      var liElement = '<li id="listitem-' + task.id + '" class="' + liClass + '">' + 
+      '<div class="view"><input class="toggle" type="checkbox"' +
         " data-id='" + task.id + "'" +
         checkedStatus +
         '><label class="item-text">' +
@@ -26,10 +28,17 @@
         task: {
           done: checkValue
         }
+      }).success(function(data) { // presume data is the object being toggled.
+        var liHtml = taskHtml(data);
+        var $li = $("#listitem-" + data.id);
+        $li.replaceWith(liHtml);
+        $('.toggle').change(toggleItems); // re-register this item to be picked up by the click event handler - this makes it un cross through the text when we subsequently toggle as not complete
       });
     }
 
-    // I think this is calling the /tasks GET action from Rails, basically the def index that spits out all data from the database in the correct order.
+
+    // I think this is calling the /tasks GET action from Rails, basically 
+    // the def index that spits out all data from the database in the correct order.
     $.get("/tasks").success( function( data ) {
       var htmlString = "";
 
@@ -40,6 +49,9 @@
       var ulTodos = $('.todo-list');
       ulTodos.html(htmlString);
 
+      // I think this sets up an event handler for when the done box is 'toggled'
+      // it calls toggleItems and somehow passes through a reference to the item
+      // that was chcked
       $('.toggle').change(toggleItems);
 
     });
